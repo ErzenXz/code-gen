@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { PlusCircle, Edit3, Trash2, ArrowRight, Sparkles, Calendar } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface Project {
   id: string;
@@ -18,6 +20,7 @@ export default function ProjectList() {
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [isFormVisible, setIsFormVisible] = useState(false);
 
   useEffect(() => {
     fetchProjects();
@@ -106,118 +109,225 @@ export default function ProjectList() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto my-10">
-      <h2 className="text-4xl font-black mb-8 text-primary tracking-tight flex items-center gap-3">
-        <svg width="38" height="38" fill="none" viewBox="0 0 24 24"><rect width="24" height="24" rx="8" fill="hsl(var(--primary))"/><path d="M8 17l4-4 4 4M8 7h8" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-        Projects
-      </h2>
-      <form onSubmit={handleCreate} className="mb-10 flex flex-col md:flex-row gap-4 items-start md:items-end bg-gradient-to-br from-primary/10 via-background to-background rounded-2xl p-8 shadow-xl border border-border">
-        <div className="flex-1 w-full">
-          <label className="block text-base font-semibold mb-1 text-foreground">Project name</label>
-          <input
-            className="border border-border rounded-xl px-5 py-3 w-full bg-background focus:ring-2 focus:ring-primary focus:outline-none text-lg transition"
-            placeholder="AI SaaS Platform"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={loading}
-            maxLength={48}
-            required
-          />
-        </div>
-        <div className="flex-1 w-full">
-          <label className="block text-base font-semibold mb-1 text-foreground">Description</label>
-          <input
-            className="border border-border rounded-xl px-5 py-3 w-full bg-background focus:ring-2 focus:ring-primary focus:outline-none text-lg transition"
-            placeholder="Optional description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            disabled={loading}
-            maxLength={120}
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-gradient-to-r from-primary to-purple-600 text-white rounded-xl px-8 py-3 font-bold shadow-lg hover:from-primary/90 hover:to-purple-700 hover:scale-[1.03] active:scale-100 transition-all duration-150 disabled:opacity-50"
-          disabled={loading}
-        >
-          {loading ? "Creating..." : "Create Project"}
-        </button>
-      </form>
-      {error && <div className="text-red-600 mb-4 font-semibold">{error}</div>}
-      <ul className="grid md:grid-cols-2 gap-8">
-        {projects.length === 0 && <li className="col-span-2 text-center text-muted-foreground">No projects found.</li>}
-        {projects.map((project) => (
-          <li key={project.id} className="rounded-2xl bg-gradient-to-br from-background via-white/70 to-primary/10 border border-border shadow-lg p-7 flex flex-col gap-3 group relative overflow-hidden cursor-pointer hover:ring-2 hover:ring-primary/40 transition-all duration-150"
-            onClick={e => {
-              // Prevent click if clicking on a button
-              if ((e.target as HTMLElement).tagName === 'BUTTON') return;
-              handleOpenProject(project.id);
-            }}
+    <div className="max-w-5xl mx-auto my-10">
+      <div className="flex justify-between items-center mb-10">
+        <h2 className="text-4xl font-black text-primary tracking-tight flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center text-white">
+            <Sparkles className="w-6 h-6" />
+          </div>
+          Projects
+        </h2>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <button
+            onClick={() => setIsFormVisible(!isFormVisible)}
+            className="flex items-center gap-2 bg-primary/10 hover:bg-primary/15 text-primary px-4 py-2 rounded-full font-medium transition-all duration-200 group"
           >
-            <div className="flex items-center gap-3 mb-1">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white text-2xl font-extrabold group-hover:scale-105 transition-transform duration-150">
-                {project.name.slice(0,2).toUpperCase()}
+            <PlusCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <span>New Project</span>
+          </button>
+        </div>
+      </div>
+
+      {isFormVisible && (
+        <div className="mb-10 overflow-hidden">
+          <div className="bg-card rounded-2xl p-6 shadow-lg border border-border animate-in slide-in-from-top duration-300">
+            <h3 className="text-xl font-bold mb-4 text-foreground flex items-center gap-2">
+              <PlusCircle className="w-5 h-5 text-primary" />
+              Create New Project
+            </h3>
+            <form onSubmit={handleCreate} className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Project name</label>
+                <input
+                  className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:ring-2 focus:ring-primary/30 focus:border-primary focus:outline-none transition-all duration-200"
+                  placeholder="My Awesome Project"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  disabled={loading}
+                  maxLength={48}
+                  required
+                />
               </div>
-              <div className="flex-1 min-w-0">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Description (optional)</label>
+                <textarea
+                  className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:ring-2 focus:ring-primary/30 focus:border-primary focus:outline-none transition-all duration-200 min-h-[80px] resize-none"
+                  placeholder="Describe your project..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  disabled={loading}
+                  maxLength={120}
+                  rows={3}
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsFormVisible(false)}
+                  className="px-4 py-2 rounded-lg border border-border text-muted-foreground hover:bg-muted/50 transition-colors duration-200"
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200 flex items-center gap-2 disabled:opacity-50"
+                  disabled={loading}
+                >
+                  {loading ? "Creating..." : "Create Project"}
+                  {!loading && <ArrowRight className="w-4 h-4" />}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {error && (
+        <div className="mb-6 p-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <span className="font-medium">{error}</span>
+        </div>
+      )}
+
+      {projects.length === 0 ? (
+        <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-border bg-card/50">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <Sparkles className="w-8 h-8 text-primary/70" />
+          </div>
+          <h3 className="text-xl font-bold text-foreground mb-2">No projects yet</h3>
+          <p className="text-muted-foreground max-w-md mx-auto mb-6">Create your first project to get started with AI-powered code generation.</p>
+          <button
+            onClick={() => setIsFormVisible(true)}
+            className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition-all duration-200"
+          >
+            <PlusCircle className="w-5 h-5" />
+            <span>Create Your First Project</span>
+          </button>
+        </div>
+      ) : (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project) => (
+            <div
+              key={project.id}
+              className="group relative bg-card rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 flex flex-col h-full"
+            >
+              {/* Card header with gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              {/* Project icon and title */}
+              <div className="p-5 flex items-start gap-4 relative">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/80 to-blue-500/80 flex items-center justify-center text-white text-xl font-bold shadow-md group-hover:shadow-primary/20 group-hover:scale-105 transition-all duration-300">
+                  {project.name.slice(0,2).toUpperCase()}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  {editId === project.id ? (
+                    <input
+                      className="w-full px-3 py-1.5 rounded-md border border-primary bg-card focus:ring-2 focus:ring-primary/30 focus:outline-none text-foreground font-medium"
+                      value={editName}
+                      onChange={e => setEditName(e.target.value)}
+                      maxLength={48}
+                      autoFocus
+                    />
+                  ) : (
+                    <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors duration-200 truncate">
+                      {project.name}
+                    </h3>
+                  )}
+
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>Created {new Date(project.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Description */}
+              <div className="px-5 pb-4 flex-1 relative">
                 {editId === project.id ? (
-                  <input
-                    className="font-bold text-xl text-foreground bg-background border border-primary rounded-lg px-3 py-1 w-full mb-1"
-                    value={editName}
-                    onChange={e => setEditName(e.target.value)}
-                    maxLength={48}
-                    autoFocus
+                  <textarea
+                    className="w-full px-3 py-2 rounded-md border border-primary bg-card focus:ring-2 focus:ring-primary/30 focus:outline-none text-muted-foreground text-sm resize-none"
+                    value={editDescription}
+                    onChange={e => setEditDescription(e.target.value)}
+                    maxLength={120}
+                    rows={3}
                   />
                 ) : (
-                  <div className="font-bold text-xl text-foreground group-hover:text-primary transition truncate">{project.name}</div>
+                  <p className="text-sm text-muted-foreground line-clamp-2 min-h-[40px]">
+                    {project.description || "No description provided"}
+                  </p>
                 )}
-                <div className="text-xs text-muted-foreground">Created {new Date(project.createdAt).toLocaleDateString()}</div>
+              </div>
+
+              {/* Actions */}
+              <div className="px-5 pb-5 pt-2 border-t border-border/50 flex justify-between items-center relative">
+                {editId === project.id ? (
+                  <div className="flex gap-2 w-full">
+                    <button
+                      className="flex-1 bg-primary text-white px-3 py-1.5 rounded-md font-medium text-sm hover:bg-primary/90 transition-colors flex items-center justify-center gap-1.5"
+                      onClick={() => handleEditSave(project.id)}
+                      disabled={loading}
+                    >
+                      Save Changes
+                    </button>
+                    <button
+                      className="flex-1 bg-muted text-foreground px-3 py-1.5 rounded-md font-medium text-sm hover:bg-muted/70 transition-colors"
+                      onClick={() => setEditId(null)}
+                      disabled={loading}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      className="text-primary hover:text-primary/80 transition-colors p-1.5 rounded-md hover:bg-primary/10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(project.id);
+                      }}
+                      disabled={loading}
+                      aria-label="Edit project"
+                    >
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+
+                    <button
+                      className="bg-primary/10 hover:bg-primary/20 text-primary px-4 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 group-hover:bg-primary group-hover:text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenProject(project.id);
+                      }}
+                    >
+                      Open Project
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+
+                    <button
+                      className="text-destructive/70 hover:text-destructive transition-colors p-1.5 rounded-md hover:bg-destructive/10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(project.id);
+                      }}
+                      disabled={loading || deletingId === project.id}
+                      aria-label={deletingId === project.id ? "Deleting..." : "Delete project"}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </>
+                )}
               </div>
             </div>
-            {editId === project.id ? (
-              <textarea
-                className="text-sm text-muted-foreground bg-background border border-primary rounded-lg px-3 py-2 w-full mb-2"
-                value={editDescription}
-                onChange={e => setEditDescription(e.target.value)}
-                maxLength={120}
-                rows={2}
-              />
-            ) : (
-              project.description && <div className="text-base text-muted-foreground line-clamp-2">{project.description}</div>
-            )}
-            <div className="flex gap-2 mt-2">
-              {editId === project.id ? (
-                <>
-                  <button
-                    className="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition"
-                    onClick={() => handleEditSave(project.id)}
-                    disabled={loading}
-                  >Save</button>
-                  <button
-                    className="bg-muted text-foreground px-4 py-2 rounded-lg font-semibold hover:bg-muted/70 transition"
-                    onClick={() => setEditId(null)}
-                    disabled={loading}
-                  >Cancel</button>
-                </>
-              ) : (
-                <>
-                  <button
-                    className="bg-gradient-to-r from-primary to-purple-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:scale-[1.07] active:scale-100 transition-all duration-150"
-                    onClick={() => handleEdit(project.id)}
-                    disabled={loading}
-                  >Edit</button>
-                  <button
-                    className="bg-destructive text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-destructive/80 hover:scale-[1.07] active:scale-100 transition-all duration-150"
-                    onClick={() => handleDelete(project.id)}
-                    disabled={loading || deletingId === project.id}
-                  >{deletingId === project.id ? "Deleting..." : "Delete"}</button>
-                </>
-              )}
-            </div>
-            {/* Subtle animated highlight */}
-            <div className="absolute -bottom-2 -right-2 w-24 h-24 rounded-full bg-primary/10 blur-2xl opacity-70 pointer-events-none animate-pulse-slow" />
-          </li>
-        ))}
-      </ul>
+          ))}
+        </div>
+      )}
+
       <style jsx global>{`
         @keyframes pulse-slow {
           0%, 100% { opacity: 0.7; transform: scale(1); }
@@ -225,6 +335,18 @@ export default function ProjectList() {
         }
         .animate-pulse-slow {
           animation: pulse-slow 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        @keyframes slide-in-from-top {
+          from { transform: translateY(-10px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-in {
+          animation-duration: 300ms;
+          animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          animation-fill-mode: both;
+        }
+        .slide-in-from-top {
+          animation-name: slide-in-from-top;
         }
       `}</style>
     </div>
