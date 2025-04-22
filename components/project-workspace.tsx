@@ -85,17 +85,17 @@ export default function ProjectWorkspace({ project }: Readonly<ProjectWorkspaceP
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center h-[calc(100vh-1.5rem)] rounded-xl border border-border shadow-xl overflow-hidden bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/80 to-blue-500/80 flex items-center justify-center text-white animate-pulse">
-            <Sparkles className="h-8 w-8" />
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-1.5rem)] rounded-2xl border border-border/50 shadow-xl overflow-hidden bg-background/50 backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-5">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-500 flex items-center justify-center text-white animate-pulse shadow-lg shadow-violet-500/20">
+            <Sparkles className="h-10 w-10" />
           </div>
           <div className="flex flex-col items-center">
-            <h2 className="text-xl font-bold mb-2">Loading Workspace</h2>
+            <h2 className="text-2xl font-bold mb-3 text-foreground">Loading Workspace</h2>
             <div className="flex items-center gap-2">
-              <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
-              <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} />
-              <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="h-2 w-2 rounded-full bg-violet-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="h-2 w-2 rounded-full bg-violet-500 animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="h-2 w-2 rounded-full bg-violet-500 animate-bounce" style={{ animationDelay: '300ms' }} />
             </div>
           </div>
         </div>
@@ -104,27 +104,27 @@ export default function ProjectWorkspace({ project }: Readonly<ProjectWorkspaceP
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-1rem)] rounded-xl border border-border shadow-xl overflow-hidden bg-background">
+    <div className="flex flex-col h-[calc(100vh-1rem)] rounded-2xl border border-border/50 shadow-xl overflow-hidden bg-background/50 backdrop-blur-sm">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-border bg-card px-5 py-3 h-14">
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" asChild className="rounded-full h-9 w-9">
-            <a href="/" className="text-muted-foreground hover:text-foreground">
-              <ChevronLeft className="h-4 w-4" />
+      <div className="flex items-center justify-between border-b border-border/50 bg-card/50 backdrop-blur-sm px-6 py-3 h-16">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" asChild className="rounded-xl h-10 w-10 hover:bg-violet-500/10 hover:text-violet-500">
+            <a href="/" className="text-muted-foreground hover:text-violet-500">
+              <ChevronLeft className="h-5 w-5" />
             </a>
           </Button>
 
-          <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-md bg-gradient-to-br from-primary/80 to-blue-500/80 flex items-center justify-center text-white">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-violet-500/20">
               <Sparkles className="h-5 w-5" />
             </div>
             <h1 className="font-semibold text-lg truncate max-w-[200px] lg:max-w-md">{project.name}</h1>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5">
-          <ThemeToggle className="h-9 w-9" />
-          <Button variant="ghost" size="icon" className="rounded-full h-9 w-9 text-muted-foreground hover:text-foreground">
+        <div className="flex items-center gap-2">
+          <ThemeToggle className="h-10 w-10" />
+          <Button variant="ghost" size="icon" className="rounded-xl h-10 w-10 text-muted-foreground hover:text-violet-500 hover:bg-violet-500/10">
             <Settings className="h-5 w-5" />
           </Button>
         </div>
@@ -134,16 +134,16 @@ export default function ProjectWorkspace({ project }: Readonly<ProjectWorkspaceP
       <div className="flex flex-1 min-h-0 relative">
         {/* File Explorer Sidebar */}
         <div
-          className={`${sidebarCollapsed ? 'w-0' : 'w-72 min-w-72'} border-r border-border bg-card flex flex-col transition-all duration-300 z-20 ${isMobile && !sidebarCollapsed ? 'absolute left-0 top-0 bottom-0' : ''}`}
+          className={`${sidebarCollapsed ? 'w-0' : 'w-80 min-w-80'} border-r border-border/50 bg-card/50 backdrop-blur-sm flex flex-col transition-all duration-300 z-20 ${isMobile && !sidebarCollapsed ? 'absolute left-0 top-0 bottom-0' : ''}`}
         >
-          <div className="flex items-center justify-between py-3 px-4 border-b border-border">
-            <div className="flex items-center gap-1.5 text-primary font-medium text-sm">
+          <div className="flex items-center justify-between py-3 px-4 border-b border-border/50">
+            <div className="flex items-center gap-2 text-violet-500 font-medium text-sm">
               <FolderTree className="h-4 w-4" />
               <span>
                 {currentFolder ? (
                   <span className="flex items-center gap-1">
                     <button
-                      className="hover:underline text-xs text-muted-foreground"
+                      className="hover:text-violet-400 text-xs text-muted-foreground"
                       onClick={() => setCurrentFolder(null)}
                     >
                       Files
@@ -194,7 +194,7 @@ export default function ProjectWorkspace({ project }: Readonly<ProjectWorkspaceP
         <Button
           variant="ghost"
           size="icon"
-          className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-card border border-border shadow-md z-30 transform translate-x-0"
+          className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-xl bg-card/80 border border-border/50 shadow-lg z-30 transform translate-x-0 hover:bg-violet-500/10 hover:text-violet-500 hover:border-violet-500/50"
           onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
         >
           {sidebarCollapsed ? <PanelRight className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
@@ -203,13 +203,13 @@ export default function ProjectWorkspace({ project }: Readonly<ProjectWorkspaceP
         {/* Main Editor Area */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-            <div className="border-b border-border px-4 flex items-center justify-between bg-card/50 backdrop-blur-sm h-11">
-              <TabsList className="h-10">
-                <TabsTrigger value="editor" className="flex items-center gap-2 text-sm h-9 px-4">
+            <div className="border-b border-border/50 px-4 flex items-center justify-between bg-card/50 backdrop-blur-sm h-12">
+              <TabsList className="h-11">
+                <TabsTrigger value="editor" className="flex items-center gap-2 text-sm h-9 px-4 data-[state=active]:bg-violet-500 data-[state=active]:text-white">
                   <Code className="h-4 w-4" />
                   <span>Editor</span>
                 </TabsTrigger>
-                <TabsTrigger value="chat" className="flex items-center gap-2 lg:hidden text-sm h-9 px-4">
+                <TabsTrigger value="chat" className="flex items-center gap-2 lg:hidden text-sm h-9 px-4 data-[state=active]:bg-violet-500 data-[state=active]:text-white">
                   <MessageSquare className="h-4 w-4" />
                   <span>AI Chat</span>
                 </TabsTrigger>
@@ -247,10 +247,10 @@ export default function ProjectWorkspace({ project }: Readonly<ProjectWorkspaceP
 
         {/* Chat Panel (desktop only) */}
         <div
-          className={`${chatCollapsed ? 'w-0' : 'w-96 min-w-96'} border-l border-border bg-card flex-col transition-all duration-300 hidden lg:flex`}
+          className={`${chatCollapsed ? 'w-0' : 'w-[400px] min-w-[400px]'} border-l border-border/50 bg-card/50 backdrop-blur-sm flex-col transition-all duration-300 hidden lg:flex`}
         >
-          <div className="flex items-center justify-between py-3 px-4 border-b border-border">
-            <div className="flex items-center gap-1.5 text-primary font-medium text-sm">
+          <div className="flex items-center justify-between py-3 px-4 border-b border-border/50">
+            <div className="flex items-center gap-2 text-violet-500 font-medium text-sm">
               <MessageSquare className="h-4 w-4" />
               <span>AI Assistant</span>
             </div>
@@ -264,7 +264,7 @@ export default function ProjectWorkspace({ project }: Readonly<ProjectWorkspaceP
         <Button
           variant="ghost"
           size="icon"
-          className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-card border border-border shadow-md z-30 transform translate-x-0 hidden lg:flex"
+          className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-xl bg-card/80 border border-border/50 shadow-lg z-30 transform translate-x-0 hidden lg:flex hover:bg-violet-500/10 hover:text-violet-500 hover:border-violet-500/50"
           onClick={() => setChatCollapsed(!chatCollapsed)}
         >
           {chatCollapsed ? <MessageSquare className="h-4 w-4" /> : <PanelRight className="h-4 w-4" />}

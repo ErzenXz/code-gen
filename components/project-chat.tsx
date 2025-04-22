@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Bot, User, MessageSquare, Plus, Loader2 } from "lucide-react";
@@ -63,10 +62,10 @@ export default function ProjectChat({ projectId }: { projectId: string }) {
   }
 
   // Handle keyboard shortcuts
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSend(e as any);
+      handleSend(e);
     }
   };
 
@@ -127,13 +126,13 @@ export default function ProjectChat({ projectId }: { projectId: string }) {
   return (
     <div className="flex flex-col h-full">
       {/* Thread selector */}
-      <div className="mb-3">
+      <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xs font-medium text-muted-foreground">Conversations</h3>
           <Button
             variant="ghost"
             size="sm"
-            className="h-7 rounded-md text-xs bg-primary/5 hover:bg-primary/10 text-primary"
+            className="h-7 rounded-lg text-xs bg-violet-500/10 hover:bg-violet-500/20 text-violet-500"
             onClick={() => setActiveThread(null)}
           >
             <Plus className="h-3 w-3 mr-1" />
@@ -141,8 +140,8 @@ export default function ProjectChat({ projectId }: { projectId: string }) {
           </Button>
         </div>
 
-        <ScrollArea className="pb-1" orientation="horizontal">
-          <div className="flex gap-1.5 py-1">
+        <ScrollArea className="pb-1">
+          <div className="flex gap-2 py-1">
             {threads.length > 0 ? (
               threads.map(thread => (
                 <Button
@@ -150,8 +149,10 @@ export default function ProjectChat({ projectId }: { projectId: string }) {
                   variant={activeThread?.id === thread.id ? "default" : "outline"}
                   size="sm"
                   className={cn(
-                    "rounded-md text-xs h-7 whitespace-nowrap max-w-[180px] px-2.5",
-                    activeThread?.id === thread.id ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+                    "rounded-lg text-xs h-7 whitespace-nowrap max-w-[180px] px-3",
+                    activeThread?.id === thread.id 
+                      ? "bg-gradient-to-r from-violet-500 to-indigo-500 text-white hover:shadow-lg hover:shadow-violet-500/20" 
+                      : "text-muted-foreground hover:text-violet-500 hover:border-violet-500/50"
                   )}
                   onClick={() => selectThread(thread)}
                 >
@@ -167,30 +168,32 @@ export default function ProjectChat({ projectId }: { projectId: string }) {
       </div>
 
       {/* Messages area */}
-      <ScrollArea className="flex-1 border border-border rounded-lg bg-card/50 mb-3">
-        <div className="space-y-3 min-h-[150px] p-4">
+      <ScrollArea className="flex-1 border border-border/50 rounded-xl bg-card/50 backdrop-blur-sm mb-4">
+        <div className="space-y-4 min-h-[150px] p-4">
           {activeThread ? (
             activeThread.messages.length > 0 ? (
               activeThread.messages.map(msg => (
                 <div key={msg.id} className={cn(
-                  "flex gap-2 max-w-[90%]",
+                  "flex gap-3 max-w-[90%]",
                   msg.sender === "user" ? "ml-auto" : "mr-auto"
                 )}>
                   <div className={cn(
-                    "flex-shrink-0 h-6 w-6 rounded-full flex items-center justify-center",
-                    msg.sender === "user" ? "order-last bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                    "flex-shrink-0 h-8 w-8 rounded-lg flex items-center justify-center",
+                    msg.sender === "user" 
+                      ? "order-last bg-gradient-to-r from-violet-500 to-indigo-500 text-white shadow-lg shadow-violet-500/20" 
+                      : "bg-muted text-muted-foreground"
                   )}>
                     {msg.sender === "user" ?
-                      <User className="h-3.5 w-3.5" /> :
-                      <Bot className="h-3.5 w-3.5" />
+                      <User className="h-4 w-4" /> :
+                      <Bot className="h-4 w-4" />
                     }
                   </div>
 
                   <div className={cn(
-                    "rounded-xl px-4 py-2.5 text-sm",
+                    "rounded-xl px-4 py-3 text-sm",
                     msg.sender === "user"
-                      ? "bg-primary text-primary-foreground rounded-tr-none"
-                      : "bg-muted text-foreground rounded-tl-none"
+                      ? "bg-gradient-to-r from-violet-500 to-indigo-500 text-white rounded-tr-none shadow-lg shadow-violet-500/20"
+                      : "bg-muted/50 text-foreground rounded-tl-none border border-border/50"
                   )}>
                     {formatMessage(msg.content)}
                   </div>
@@ -198,26 +201,26 @@ export default function ProjectChat({ projectId }: { projectId: string }) {
               ))
             ) : (
               <div className="flex flex-col items-center justify-center h-32 text-center text-muted-foreground">
-                <MessageSquare className="h-8 w-8 mb-2 opacity-20" />
+                <MessageSquare className="h-8 w-8 mb-3 opacity-20" />
                 <p className="text-sm">Thread created. Send a message to start the conversation.</p>
               </div>
             )
           ) : (
             <div className="flex flex-col items-center justify-center h-32 text-center text-muted-foreground">
-              <Bot className="h-10 w-10 mb-3 opacity-20" />
-              <p className="text-sm font-medium mb-1">Start a new thread</p>
+              <Bot className="h-12 w-12 mb-4 opacity-20" />
+              <p className="text-sm font-medium mb-2">Start a new thread</p>
               <p className="text-xs max-w-[250px]">Ask questions about your project or request code examples</p>
             </div>
           )}
 
           {loading && (
-            <div className="flex gap-2 max-w-[90%] mr-auto">
-              <div className="flex-shrink-0 h-6 w-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center">
-                <Bot className="h-3.5 w-3.5" />
+            <div className="flex gap-3 max-w-[90%] mr-auto">
+              <div className="flex-shrink-0 h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
+                <Bot className="h-4 w-4" />
               </div>
-              <div className="bg-muted text-foreground rounded-xl rounded-tl-none px-4 py-2.5 text-sm">
-                <div className="flex items-center gap-1.5">
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              <div className="bg-muted/50 text-foreground rounded-xl rounded-tl-none px-4 py-3 text-sm border border-border/50">
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
                   <span>Thinking...</span>
                 </div>
               </div>
@@ -238,20 +241,20 @@ export default function ProjectChat({ projectId }: { projectId: string }) {
             onKeyDown={handleKeyDown}
             disabled={loading}
             placeholder={activeThread ? "Type your message..." : "Start a new conversation..."}
-            className="w-full border border-border rounded-lg pl-3 pr-12 py-2.5 bg-card/50 focus:ring-1 focus:ring-primary focus:outline-none text-sm resize-none min-h-[44px] max-h-[120px]"
+            className="w-full border border-border/50 rounded-xl pl-4 pr-14 py-3 bg-card/50 backdrop-blur-sm focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 focus:outline-none text-sm resize-none min-h-[50px] max-h-[120px]"
             rows={1}
           />
           <Button
             type="submit"
             size="icon"
             disabled={loading || !input.trim()}
-            className="absolute right-1.5 bottom-1.5 h-8 w-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            className="absolute right-2 bottom-2 h-9 w-9 rounded-lg bg-gradient-to-r from-violet-500 to-indigo-500 text-white hover:shadow-lg hover:shadow-violet-500/20 transition-all duration-200 disabled:opacity-50"
           >
             <Send className="h-4 w-4" />
           </Button>
         </div>
-        <div className="mt-1.5 text-xs text-muted-foreground text-center">
-          <span>Press <kbd className="px-1 py-0.5 bg-muted rounded border border-border mx-0.5 text-[10px]">Enter</kbd> to send, <kbd className="px-1 py-0.5 bg-muted rounded border border-border mx-0.5 text-[10px]">Shift+Enter</kbd> for new line</span>
+        <div className="mt-2 text-xs text-muted-foreground text-center">
+          <span>Press <kbd className="px-1.5 py-0.5 bg-muted/50 rounded-md border border-border/50 mx-1 text-[10px] font-mono">Enter</kbd> to send, <kbd className="px-1.5 py-0.5 bg-muted/50 rounded-md border border-border/50 mx-1 text-[10px] font-mono">Shift+Enter</kbd> for new line</span>
         </div>
       </form>
     </div>

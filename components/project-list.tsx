@@ -109,38 +109,38 @@ export default function ProjectList() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto my-10">
-      <div className="flex justify-between items-center mb-10">
-        <h2 className="text-4xl font-black text-primary tracking-tight flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center text-white">
-            <Sparkles className="w-6 h-6" />
+    <div className="max-w-6xl mx-auto my-12 px-4">
+      <div className="flex justify-between items-center mb-12">
+        <h2 className="text-4xl font-bold text-foreground tracking-tight flex items-center gap-4">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-violet-500/20">
+            <Sparkles className="w-7 h-7" />
           </div>
           Projects
         </h2>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <ThemeToggle />
           <button
             onClick={() => setIsFormVisible(!isFormVisible)}
-            className="flex items-center gap-2 bg-primary/10 hover:bg-primary/15 text-primary px-4 py-2 rounded-full font-medium transition-all duration-200 group"
+            className="flex items-center gap-2 bg-gradient-to-r from-violet-500 to-indigo-500 text-white px-5 py-2.5 rounded-xl font-medium transition-all duration-200 hover:shadow-lg hover:shadow-violet-500/20 hover:-translate-y-0.5"
           >
-            <PlusCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <PlusCircle className="w-5 h-5" />
             <span>New Project</span>
           </button>
         </div>
       </div>
 
       {isFormVisible && (
-        <div className="mb-10 overflow-hidden">
-          <div className="bg-card rounded-2xl p-6 shadow-lg border border-border animate-in slide-in-from-top duration-300">
-            <h3 className="text-xl font-bold mb-4 text-foreground flex items-center gap-2">
-              <PlusCircle className="w-5 h-5 text-primary" />
+        <div className="mb-12 overflow-hidden">
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-border/50 animate-in slide-in-from-top duration-300">
+            <h3 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-3">
+              <PlusCircle className="w-6 h-6 text-violet-500" />
               Create New Project
             </h3>
-            <form onSubmit={handleCreate} className="space-y-4">
+            <form onSubmit={handleCreate} className="space-y-6">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">Project name</label>
                 <input
-                  className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:ring-2 focus:ring-primary/30 focus:border-primary focus:outline-none transition-all duration-200"
+                  className="w-full px-4 py-3 rounded-xl border border-border/50 bg-card focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 focus:outline-none transition-all duration-200"
                   placeholder="My Awesome Project"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -152,7 +152,7 @@ export default function ProjectList() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">Description (optional)</label>
                 <textarea
-                  className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:ring-2 focus:ring-primary/30 focus:border-primary focus:outline-none transition-all duration-200 min-h-[80px] resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-border/50 bg-card focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 focus:outline-none transition-all duration-200 min-h-[100px] resize-none"
                   placeholder="Describe your project..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -161,18 +161,18 @@ export default function ProjectList() {
                   rows={3}
                 />
               </div>
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex justify-end gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => setIsFormVisible(false)}
-                  className="px-4 py-2 rounded-lg border border-border text-muted-foreground hover:bg-muted/50 transition-colors duration-200"
+                  className="px-5 py-2.5 rounded-xl border border-border/50 text-muted-foreground hover:bg-card/80 transition-all duration-200"
                   disabled={loading}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200 flex items-center gap-2 disabled:opacity-50"
+                  className="bg-gradient-to-r from-violet-500 to-indigo-500 text-white px-6 py-2.5 rounded-xl font-medium hover:shadow-lg hover:shadow-violet-500/20 hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2 disabled:opacity-50"
                   disabled={loading}
                 >
                   {loading ? "Creating..." : "Create Project"}
@@ -185,7 +185,7 @@ export default function ProjectList() {
       )}
 
       {error && (
-        <div className="mb-6 p-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive flex items-center gap-2">
+        <div className="mb-8 p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
             <circle cx="12" cy="12" r="10" />
             <line x1="12" y1="8" x2="12" y2="12" />
@@ -196,15 +196,15 @@ export default function ProjectList() {
       )}
 
       {projects.length === 0 ? (
-        <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-border bg-card/50">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-            <Sparkles className="w-8 h-8 text-primary/70" />
+        <div className="text-center py-20 px-4 rounded-2xl border border-dashed border-border/50 bg-card/50 backdrop-blur-sm">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-violet-500/10 to-indigo-500/10 flex items-center justify-center">
+            <Sparkles className="w-10 h-10 text-violet-500" />
           </div>
-          <h3 className="text-xl font-bold text-foreground mb-2">No projects yet</h3>
-          <p className="text-muted-foreground max-w-md mx-auto mb-6">Create your first project to get started with AI-powered code generation.</p>
+          <h3 className="text-2xl font-bold text-foreground mb-3">No projects yet</h3>
+          <p className="text-muted-foreground max-w-md mx-auto mb-8">Create your first project to get started with AI-powered code generation.</p>
           <button
             onClick={() => setIsFormVisible(true)}
-            className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition-all duration-200"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-500 to-indigo-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg hover:shadow-violet-500/20 hover:-translate-y-0.5 transition-all duration-200"
           >
             <PlusCircle className="w-5 h-5" />
             <span>Create Your First Project</span>
@@ -215,33 +215,33 @@ export default function ProjectList() {
           {projects.map((project) => (
             <div
               key={project.id}
-              className="group relative bg-card rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 flex flex-col h-full"
+              className="group relative bg-card/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-border/50 hover:border-violet-500/30 hover:shadow-xl hover:shadow-violet-500/5 transition-all duration-300 flex flex-col"
             >
               {/* Card header with gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-500/[0.03] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               {/* Project icon and title */}
-              <div className="p-5 flex items-start gap-4 relative">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/80 to-blue-500/80 flex items-center justify-center text-white text-xl font-bold shadow-md group-hover:shadow-primary/20 group-hover:scale-105 transition-all duration-300">
+              <div className="p-6 flex items-start gap-4 relative">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-500 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-violet-500/20 group-hover:shadow-violet-500/30 group-hover:scale-105 transition-all duration-300">
                   {project.name.slice(0,2).toUpperCase()}
                 </div>
 
                 <div className="flex-1 min-w-0">
                   {editId === project.id ? (
                     <input
-                      className="w-full px-3 py-1.5 rounded-md border border-primary bg-card focus:ring-2 focus:ring-primary/30 focus:outline-none text-foreground font-medium"
+                      className="w-full px-4 py-2 rounded-xl border border-violet-500 bg-card focus:ring-2 focus:ring-violet-500/20 focus:outline-none text-foreground font-medium"
                       value={editName}
                       onChange={e => setEditName(e.target.value)}
                       maxLength={48}
                       autoFocus
                     />
                   ) : (
-                    <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors duration-200 truncate">
+                    <h3 className="font-bold text-lg text-foreground group-hover:text-violet-500 transition-colors duration-200 truncate">
                       {project.name}
                     </h3>
                   )}
 
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1.5">
                     <Calendar className="w-3.5 h-3.5" />
                     <span>Created {new Date(project.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                   </div>
@@ -249,10 +249,10 @@ export default function ProjectList() {
               </div>
 
               {/* Description */}
-              <div className="px-5 pb-4 flex-1 relative">
+              <div className="px-6 pb-5 flex-1 relative">
                 {editId === project.id ? (
                   <textarea
-                    className="w-full px-3 py-2 rounded-md border border-primary bg-card focus:ring-2 focus:ring-primary/30 focus:outline-none text-muted-foreground text-sm resize-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-violet-500 bg-card focus:ring-2 focus:ring-violet-500/20 focus:outline-none text-muted-foreground text-sm resize-none"
                     value={editDescription}
                     onChange={e => setEditDescription(e.target.value)}
                     maxLength={120}
@@ -266,18 +266,18 @@ export default function ProjectList() {
               </div>
 
               {/* Actions */}
-              <div className="px-5 pb-5 pt-2 border-t border-border/50 flex justify-between items-center relative">
+              <div className="px-6 pb-6 pt-3 border-t border-border/30 flex justify-between items-center relative">
                 {editId === project.id ? (
                   <div className="flex gap-2 w-full">
                     <button
-                      className="flex-1 bg-primary text-white px-3 py-1.5 rounded-md font-medium text-sm hover:bg-primary/90 transition-colors flex items-center justify-center gap-1.5"
+                      className="flex-1 bg-gradient-to-r from-violet-500 to-indigo-500 text-white px-4 py-2 rounded-xl font-medium hover:shadow-lg hover:shadow-violet-500/20 transition-all duration-200 flex items-center justify-center gap-1.5"
                       onClick={() => handleEditSave(project.id)}
                       disabled={loading}
                     >
                       Save Changes
                     </button>
                     <button
-                      className="flex-1 bg-muted text-foreground px-3 py-1.5 rounded-md font-medium text-sm hover:bg-muted/70 transition-colors"
+                      className="flex-1 bg-muted text-foreground px-4 py-2 rounded-xl font-medium hover:bg-muted/70 transition-colors"
                       onClick={() => setEditId(null)}
                       disabled={loading}
                     >
@@ -287,7 +287,7 @@ export default function ProjectList() {
                 ) : (
                   <>
                     <button
-                      className="text-primary hover:text-primary/80 transition-colors p-1.5 rounded-md hover:bg-primary/10"
+                      className="text-violet-500 hover:text-violet-400 transition-colors p-2 rounded-xl hover:bg-violet-500/10"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleEdit(project.id);
@@ -299,7 +299,7 @@ export default function ProjectList() {
                     </button>
 
                     <button
-                      className="bg-primary/10 hover:bg-primary/20 text-primary px-4 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 group-hover:bg-primary group-hover:text-white"
+                      className="bg-violet-500/10 hover:bg-violet-500/20 text-violet-500 px-5 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 group-hover:bg-gradient-to-r group-hover:from-violet-500 group-hover:to-indigo-500 group-hover:text-white"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleOpenProject(project.id);
@@ -310,7 +310,7 @@ export default function ProjectList() {
                     </button>
 
                     <button
-                      className="text-destructive/70 hover:text-destructive transition-colors p-1.5 rounded-md hover:bg-destructive/10"
+                      className="text-destructive/70 hover:text-destructive transition-colors p-2 rounded-xl hover:bg-destructive/10"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDelete(project.id);
